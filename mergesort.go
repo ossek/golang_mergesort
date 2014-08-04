@@ -90,23 +90,23 @@ func extractSliceFromCsv(filename string) []int {
 
 	for readerr == nil {
 		counter++
-		num, err := strconv.Atoi(TrimPunc(token))
-		if err != nil {
-			fmt.Println("problem converting")
-			panic(err)
-		}
-		extracted = append(extracted, num)
+		extracted = ConvertAndAppend(token,extracted)
 		token, readerr = reader.ReadString(',')
 	}
 	if readerr == io.EOF {
-		num, err := strconv.Atoi(TrimPunc(token))
+		extracted = ConvertAndAppend(token,extracted)
+
+	}
+	return extracted
+}
+
+func ConvertAndAppend(token string, appendee []int) []int{
+	num, err := strconv.Atoi(TrimPunc(token))
 		if err != nil {
 			fmt.Println("problem converting")
 			panic(err)
 		}
-		extracted = append(extracted, num)
-	}
-	return extracted
+		return append(appendee, num)
 }
 
 func TrimPunc(word string) string {
